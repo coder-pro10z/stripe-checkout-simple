@@ -6,7 +6,7 @@ const cors = require("cors")
 app.use(express.json())
 app.use(
   cors({
-    origin: "http://localhost:5500",
+    origin: "http://127.0.0.1:3000",
   })
 )
 
@@ -20,7 +20,11 @@ const storeItems = new Map([
 app.post("/create-checkout-session", async (req, res) => {
   try {
     const session = await stripe.checkout.sessions.create({
+      //for debit credit cards
       payment_method_types: ["card"],
+      //for other payment options
+      // payment_method_types: ['card', 'ideal', 'sepa_debit', 'sofort', 'giropay', 'bancontact', 'p24', 'eps', 'alipay', 'wechat_pay'],
+
       mode: "payment",
       line_items: req.body.items.map(item => {
         const storeItem = storeItems.get(item.id)
